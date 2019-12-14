@@ -1,0 +1,149 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="content-section">
+        <form method="POST" action="" class="form-inline pt-2 justify-content-center">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group pt-2">
+                <legend class="border-bottom">Search {{ search_type }}</legend>
+                <div class="form-group">
+                    {% if form.text.errors %}
+                    {{ form.text(class="form-control form-control-sm is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.text.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.text(class="form-control form-control-md m-2", placeholder="Search") }}
+                    {% endif %}
+                    {{ form.submit(class="btn btn-outline-info m-2") }}
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+{% if data %}
+<div class="py-5">
+    <div>
+        {% if search_type == 'album' %}
+        {% for element in data %}
+        <legend class="border-bottom m-2">{{ element.genre }}</legend>
+        <div class="row">
+            {% for e in element.data %}
+            <div class="col-2 mb-5">
+                {% if e.explicit_lyrics %}
+                <div class="card border-danger">
+                    {% else %}
+                    <div class="card border-success">
+                        {% endif %}
+
+                        <div class="card-header">
+                            <a href="{{ url_for('selected', search_type=search_type, id=e.id) }}">{{ e.title }}</a>
+                        </div>
+                        <img id="{{search_type}}_{{ e.id }}" src="{{ e.cover_big }}" class="card-img-top cursor-pointer"
+                            alt="..." onclick="playSongs(this.id)">
+                        <div class="card-body container">
+                            <div class="row form-group bg-transparent">
+                                <a class="btn btn-light col-6"
+                                    href="{{ url_for('selected', search_type='track', id=id) }}">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                </a>
+                                <a class="btn btn-light col-6" href="#" role="button">
+                                    <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+
+            {% elif search_type == 'artist' %}
+            <div class="row">
+                {% for element in data %}
+                <div class="col-3 mb-5">
+                    <div class="card border-success">
+                        <div class="card-header">
+                            <a
+                                href="{{ url_for('selected', search_type=search_type, id=element.id) }}">{{ element.name }}</a>
+                        </div>
+                        <img id="{{search_type}}_{{ element.id }}" src="{{ element.picture_big }}"
+                            class="card-img-top cursor-pointer" alt="..." onclick="playSongs(this.id)">
+                        <div class="card-body container">
+                            <div class="row form-group bg-transparent">
+                                <a class="btn btn-light col-6"
+                                    href="{{ url_for('selected', search_type='track', id=id) }}">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                </a>
+                                <a class="btn btn-light col-6" href="#" role="button">
+                                    <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% elif search_type == 'playlist' %}
+            <div class="row">
+                {% for element in data %}
+                <div class="col-3 mb-5">
+                    <div class="card border-success">
+                        <div class="card-header">
+                            <a
+                                href="{{ url_for('selected', search_type=search_type, id=element.id) }}">{{ element.title }}</a>
+                        </div>
+                        <img id="{{search_type}}_{{ element.id }}" src="{{ element.picture_big }}"
+                            class="card-img-top cursor-pointer" alt="..." onclick="playSongs(this.id)">
+                        <div class="card-body container">
+                            <div class="row form-group bg-transparent">
+                                <a class="btn btn-light col-6"
+                                    href="{{ url_for('selected', search_type='track', id=id) }}">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                </a>
+                                <a class="btn btn-light col-6" href="#" role="button">
+                                    <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% elif search_type == 'track' %}
+            <div class="row">
+                {% for element in data %}
+                <div id="{{search_type}}_{{element.id}}" class="col-12 text-lg font-weigth-bold cursor-pointer my-3"
+                    onclick="playSongs(this.id)">
+                    <div class="row">
+                        <div class="col-6">
+                            <a href="{{ url_for('selected', search_type=search_type, id=element.id) }}">
+                                {{ element.title }}
+                            </a>
+                        </div>
+                        <div class="col-3">
+                            {{ element.artist.name }}
+                        </div>
+                        <div class="col-3">
+                            {{ element.album.title }}
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock content %}

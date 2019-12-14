@@ -1,0 +1,249 @@
+{% extends "layout.html" %}
+{% block content %}
+
+{% if data.type == 'album' %}
+<div class="row my-5">
+    <legend class="border-bottom m-2 text-center display-4">Album</legend>
+    <div class="col-4 justify-content-center m-2 py-5">
+        <img id="{{data.type}}_{{ data.id }}" src="{{ data.cover_big }}" class="card-img-top cursor-pointer" alt="..."
+            onclick="playSongs(this.id)">
+        <div class="text-center my-3 h4">
+            {{ data.title }}
+        </div>
+        <div class="row">
+            <div class="col-6 text-lg-right font-weight-bold pr-2">
+                Genre
+            </div>
+            <div class="col-6 pl-2">
+                {% for g in data.genres.data %}
+                <div class="text-lg">
+                    {{ g.name }}
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="col-6 text-lg-right font-weight-bold pr-2">
+                Artist(s)
+            </div>
+            <div class="col-6 pl-2">
+                {% for artist in data.contributors %}
+                {% if artist.type == 'artist' %}
+                <div class="text-lg">
+                    <a href="{{ url_for('selected', search_type='artist', id=artist.id) }}">{{ artist.name }}</a>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="col-6 font-weight-bold text-lg-right pr-2">
+                Release Date
+            </div>
+            <div class="col-6 pl-2 text-lg">
+                {{ data.release_date }}
+            </div>
+
+            <div class="col-6 font-weight-bold text-lg-right pr-2">
+                # of Fans
+            </div>
+            <div class="col-6 pl-2 text-lg">
+                {{ data.fans }}
+            </div>
+
+            <div class="col-6 font-weight-bold text-lg-right pr-2">
+                # of Tracks
+            </div>
+            <div class="col-6 pl-2 text-lg">
+                {{ data.nb_tracks }}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-7 m-2 py-5">
+
+        {% for track in data.tracks.data %}
+        <div class="row m-2 text-lg">
+            <div id="track_{{ track.id }}" class="col-8 cursor-pointer" onclick="playSongs(this.id)">
+                <div class="font-weight-bold">
+                    {{ track.title }}
+                </div>
+                <div class="text-lg">
+                    <a href="{{ url_for('selected', search_type='artist', id=track.artist.id) }}">
+                        {{ track.artist.name }}
+                    </a>
+                </div>
+            </div>
+            <div class="col-2 text-right">Favorite</div>
+        </div>
+        <hr>
+        {% endfor %}
+    </div>
+</div>
+{% elif data.type == 'artist' %}
+<div class="row my-5">
+    <legend class="border-bottom m-2 text-center display-4">Artist</legend>
+    <div class="col-4 justify-content-center m-2 py-5">
+        <img src="{{ data.picture_big }}" class="card-img-top" alt="...">
+        <div class="text-center my-3 h4">
+            {{ data.name }}
+        </div>
+        <div class="row">
+            <div class="col-6 font-weight-bold text-lg-right pr-2">
+                # of Albums
+            </div>
+            <div class="col-6 pl-2 text-lg">
+                {{ data.nb_album }}
+            </div>
+            <div class="col-6 font-weight-bold text-lg-right pr-2">
+                # of Fans
+            </div>
+            <div class="col-6 pl-2 text-lg">
+                {{ data.nb_fan }}
+            </div>
+        </div>
+    </div>
+    <div class="col-7 m-2 py-5">
+        {% for track in data.track_data %}
+        <div class="row m-2 text-lg">
+            <div class="col-2">
+                <img src="{{ track.album.cover_small }}" alt="...">
+            </div>
+            <div id="track_{{ track.id }}" class="col-6 cursor-pointer" onclick="playSongs(this.id)">
+                <div class="font-weight-bold">
+                    {{ track.title }}
+                </div>
+                <div class="text-lg">
+                    <a href="{{ url_for('selected', search_type='album', id=track.album.id) }}">
+                        {{ track.album.title }}
+                    </a>
+                </div>
+            </div id="track_{{ track.id }}">
+            <div class="col-2 text-right">Favorite</div>
+        </div>
+        <hr>
+        {% endfor %}
+    </div>
+</div>
+
+{% elif data.type == 'playlist' %}
+<div class="row my-5">
+    <legend class="border-bottom m-2 text-center display-4">Playlist</legend>
+    <div class="col-4 justify-content-center m-2 py-5">
+        <img id="{{data.type}}_{{ data.id }}" src="{{ data.picture_big }}" class="card-img-top cursor-pointer" alt="..."
+            onclick="playSongs(this.id)">
+        <div class="text-center my-3 h4">
+            {{ data.title }}
+        </div>
+        <div class="row">
+            <div class="col-6 font-weight-bold text-lg-right pr-2">
+                Creation Date
+            </div>
+            <div class="col-6 pl-2 text-lg">
+                {{ data.creation_date }}
+            </div>
+
+            <div class="col-6 font-weight-bold text-lg-right pr-2">
+                # of Fans
+            </div>
+            <div class="col-6 pl-2 text-lg">
+                {{ data.fans }}
+            </div>
+
+            <div class="col-6 font-weight-bold text-lg-right pr-2">
+                # of Tracks
+            </div>
+            <div class="col-6 pl-2 text-lg">
+                {{ data.nb_tracks }}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-7 m-2 py-5">
+
+        {% for track in data.tracks.data %}
+        <div class="row m-2 text-lg">
+            <div class="col-2">
+                <img src="{{ track.album.cover_small }}" alt="...">
+            </div>
+            <div id="track_{{ track.id }}" class="col-8 cursor-pointer" onclick="playSongs(this.id)">
+                <div class="font-weight-bold">
+                    {{ track.title }}
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-6 text-md font-weight-bold">
+                        Album
+                    </div>
+                    <div class="col-6 text-md font-weight-bold">
+                        Artist
+                    </div>
+                    <div class="col-6 text-md">
+                        <a href="{{ url_for('selected', search_type='album', id=track.album.id) }}">
+                            {{ track.album.title }}
+                        </a>
+                    </div>
+                    <div class="col-6 text-md">
+                        <a href="{{ url_for('selected', search_type='artist', id=track.artist.id) }}">
+                            {{ track.artist.name }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2 text-right">Favorite</div>
+        </div>
+        <hr>
+        {% endfor %}
+    </div>
+</div>
+{% elif data.type == 'track' %}
+<div class="row my-5">
+    <legend class="border-bottom m-2 text-center display-4">Track</legend>
+    <div class="col-12 mb-5 row">
+            <div class="col-8">
+                <div class="text-lg font-weight-bold">{{ data.title }}</div>
+                <div class="row pt-3">
+                    <div class="col-6 font-weight-bold text-sm">Release Date</div>
+                    <div class="col-6 font-weight-bold text-sm">Rank</div>
+                    <div class="col-6 text-sm">{{ data.release_date }}</div>
+                    <div class="col-6 text-sm">{{ data.rank }}</div>
+                </div>
+            </div>
+            <div class="col-4">
+                Favorite
+            </div>
+    </div>
+
+    <div class="col-4 justify-content-center m-2">
+        <img id="album_{{ data.album.id }}" src="{{ data.album.cover_big }}" class="card-img-top cursor-pointer"
+            alt="..." onclick="playSongs(this.id)">
+        <div class="row">
+            <div class="col-6 font-weight-bold text-lg-right pr-2">
+                Title
+            </div>
+            <a href="{{ url_for('selected', search_type='album', id=data.album.id) }}" class="col-6 pl-2 text-lg">
+                {{ data.album.title }}
+            </a>
+            <div class="col-6 font-weight-bold text-lg-right pr-2">
+                Release Date
+            </div>
+            <div class="col-6 pl-2 text-lg">
+                {{ data.album.release_date }}
+            </div>
+        </div>
+    </div>
+    <div class="col-4 justify-content-center m-2">
+        {% for artist in data.contributors %}
+        <div class="my-3">
+            <a href="{{ url_for('selected', search_type='artist', id=artist.id) }}">
+                <img src="{{ artist.picture_big }}" class="card-img-top" alt="...">
+            </a>
+            <div class="text-center my-3 h4">
+                {{ artist.name }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endif %}
+
+{% endblock content %}

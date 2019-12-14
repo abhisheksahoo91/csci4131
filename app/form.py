@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Regexp
 from app import bcrypt
 from app.dbclass import User
@@ -69,3 +69,7 @@ class UpdateProfileForm(FlaskForm):
     def validate_password(self, new_password):
         if new_password != '' and ' ' in new_password:
             raise ValidationError('The password cannot contain white space.')
+
+class SearchForm(FlaskForm):
+    text = StringField('Search Text', validators=[DataRequired()])
+    submit = SubmitField('Search')

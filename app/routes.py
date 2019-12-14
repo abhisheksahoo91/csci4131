@@ -1,12 +1,17 @@
 from flask import render_template, url_for, flash, redirect, request
-from app import app, db, bcrypt
+from app import app, db, bcrypt, logging
 from app.dbclass import User
-from app.form import RegistrationForm, LoginForm, UpdateProfileForm
+from app.form import RegistrationForm, LoginForm, UpdateProfileForm, SearchForm
+from app.mymusic import MyMusic
 from flask_login import login_user, current_user, logout_user, login_required
+import requests, ast
+
+DEEZER_BASE_URL = 'http://api.deezer.com/search?'
 
 @app.route("/")
 @app.route("/home")
 def home():
+    logging.info('app started')
     return render_template('home.html')
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -37,7 +42,7 @@ def login():
                 login_user(user, remember=form.remember.data)
                 next_page = request.args.get('next')
                 flash(f'Welcome {user.firstname}!', 'success')
-                return redirect(next_page) if next_page else redirect(url_for('user_home'))
+                return redirect(next_page) if next_page else redirect(url_for('home'))
             else:
                 flash('Email and password do not match. Please try again!', 'danger')
         else:
@@ -50,10 +55,32 @@ def logout():
     flash('You logged out successfully!', 'success')
     return redirect(url_for('home'))
 
-@app.route('/user_home')
+@app.route('/search/<search_type>', methods=['GET', 'POST'])
 @login_required
-def user_home():
-    return render_template('user_home.html')
+def search(search_type):
+    form = SearchForm()
+    data=None
+    if form.validate_on_submit():
+        # print('Inside validate_on_submit')
+        my_music = MyMusic()
+        search_text = form.text.data
+        data = my_music.search_entity(search_type, search_text)
+
+        # Format album data to group them based on genre
+        if search_type == 'album':
+            data = my_music.group_album_by_genre(data)
+            # print(data)
+        
+        return render_template('search.html', form=form, data=data, search_type=search_type)
+    return render_template('search.html', form=form, data=data, search_type=search_type)
+
+@app.route('/selected/<search_type>/<id>', methods=['GET', 'POST'])
+@login_required
+def selected(search_type, id):
+    my_music = MyMusic()
+    data = my_music.get_entity_byId(search_type, id)
+    
+    return render_template('selected.html', data=data)
 
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
@@ -83,7 +110,7 @@ def profile():
         else:
             flash('No fields updated.', 'success')
         
-        return redirect(url_for('user_home'))
+        return redirect(url_for('home'))
     elif request.method =='GET':
         form.username.data = current_user.username
         form.email.data = current_user.email

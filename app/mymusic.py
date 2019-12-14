@@ -1,6 +1,7 @@
 import requests
-from app import logging
-from app.dbclass import Genre
+from app import logging, db
+from app.dbclass import Genre, Favorite
+from flask_login import current_user
 
 class MyMusic:
     # URL
@@ -13,53 +14,18 @@ class MyMusic:
         resp = requests.get(url)
         json = resp.json()
         data = json.get('data')
-        '''
-        data = []
-        if name == 'album':
-            for i_data in json_data:
-                info = {
-                    "id": i_data.get('id'),
-                    "name": i_data.get('title'),
-                    "image": i_data.get('cover_big'),
-                }
-                data.append(info)
-        elif name == 'artist':
-            for i_data in json_data:
-                info = {
-                    "id": i_data.get('id'),
-                    "name": i_data.get('name'),
-                    "image": i_data.get('picture_big')
-                }
-                data.append(info)
-        elif name == 'playlist':
-            for i_data in json_data:
-                info = {
-                    "id": i_data.get('id'),
-                    "name": i_data.get('title'),
-                    "image": i_data.get('picture_big')
-                }
-                data.append(info)
-        elif name == 'track':
-            for i_data in json_data:
-                info = {
-                    "id": i_data.get('id'),
-                    "name": i_data.get('title'),
-                    "image": i_data.get('album').get('cover_big'),
-                }
-                data.append(info)
-        data = {
-            "name": name, "data": data
-        }
-        
-        # Format the data first
-        if json_data != None or json_data!= '':
-            data = {
-                "type": name,
-                "data": json_data
-            }
-        '''
         #print(data)
+        for d in data:
+            d['favorite'] = self.check_favorite(d.get('type'), d.get('id'))
+        print(data)
         return data
+
+    def check_favorite(self, entity_type, entity_id):
+        fav = Favorite.query.filter_by(user_id=current_user.id, entity_type=entity_type, entity_id=entity_id).first()
+        if fav:
+            return True
+        else:
+            return False
         
     def group_album_by_genre(self, data):
         data = sorted(data, key=lambda i: i['genre_id'])
@@ -100,13 +66,6 @@ class MyMusic:
         data_list = sorted(data_list, key=lambda i: i['list_length'])
         data_list = data_list[::-1]
         [data.pop('list_length', None) for data in data_list]
-        '''
-        for d in data_list:
-            print(d.get('genre'))
-            for di in d.get('data'):
-                print (di.get('genre_id'))
-            print('End')
-        '''
         return data_list
 
     def get_entity_byId(self, search_type, id):
@@ -115,7 +74,9 @@ class MyMusic:
         url = self.BASE_URL + QUERY_URL
         resp = requests.get(url)
         data = resp.json()
-        if search_type != 'track':
+        for d in data:
+            d['favorite'] = self.check_favorite(d.get('type'), d.get('id'))
+        if search_type == 'artist':
             url = data.get('tracklist')
             resp = requests.get(url)
             track_data = resp.json().get('data')

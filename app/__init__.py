@@ -12,6 +12,7 @@ app = Flask(__name__)
 CORS(app)
 app.config['SECRET_KEY'] = secrets.token_hex(16)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///appdb.db'
+app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)

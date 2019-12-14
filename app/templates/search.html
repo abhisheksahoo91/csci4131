@@ -33,7 +33,7 @@
         <legend class="border-bottom m-2">{{ element.genre }}</legend>
         <div class="row">
             {% for e in element.data %}
-            <div class="col-2 mb-5">
+            <div class="col-3 mb-5">
                 {% if e.explicit_lyrics %}
                 <div class="card border-danger">
                     {% else %}
@@ -47,14 +47,18 @@
                             alt="..." onclick="playSongs(this.id)">
                         <div class="card-body container">
                             <div class="row form-group bg-transparent">
+                                {% if e.favorite %}
+                                <div class="border-danger">Remove</div>
+                                {% else %}
+                                <div class="border-success">Add</div>
+                                {% endif %}
                                 <a class="btn btn-light col-6"
-                                    href="{{ url_for('selected', search_type='track', id=id) }}">
+                                    href="{{ url_for('selected', search_type='track', id=e.id) }}">
                                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                                 </a>
                                 <a class="btn btn-light col-6" href="#" role="button">
                                     <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
                                 </a>
-
                             </div>
                         </div>
                     </div>

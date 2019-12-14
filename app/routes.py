@@ -79,7 +79,6 @@ def search(search_type):
 def selected(search_type, id):
     my_music = MyMusic()
     data = my_music.get_entity_byId(search_type, id)
-    
     return render_template('selected.html', data=data)
 
 @app.route('/profile', methods=['GET', 'POST'])

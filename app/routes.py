@@ -61,18 +61,20 @@ def search(search_type):
     form = SearchForm()
     data=None
     if form.validate_on_submit():
-        # print('Inside validate_on_submit')
-        my_music = MyMusic()
         search_text = form.text.data
-        data = my_music.search_entity(search_type, search_text)
-
-        # Format album data to group them based on genre
-        if search_type == 'album':
-            data = my_music.group_album_by_genre(data)
-            # print(data)
+        return redirect(url_for('searched', search_type=search_type, search_text=search_text))
         
-        return render_template('search.html', form=form, data=data, search_type=search_type)
     return render_template('search.html', form=form, data=data, search_type=search_type)
+
+@app.route('/searched/<search_type>/<search_text>', methods=['GET', 'POST'])
+@login_required
+def searched(search_type, search_text):
+    my_music = MyMusic()
+    data = my_music.search_entity(search_type, search_text)
+    # Format album data to group them based on genre
+    if search_type == 'album':
+        data = my_music.group_album_by_genre(data)
+    return render_template('searched.html', data=data, search_type=search_type, search_text=search_text)
 
 @app.route('/selected/<search_type>/<id>', methods=['GET', 'POST'])
 @login_required
@@ -80,6 +82,22 @@ def selected(search_type, id):
     my_music = MyMusic()
     data = my_music.get_entity_byId(search_type, id)
     return render_template('selected.html', data=data)
+
+@app.route('/favorite', methods=['GET', 'POST'])
+@login_required
+def favorite():
+    target = request.args.get('target')
+    search_type = request.args.get('search_type')
+    search_text = request.args.get('search_text')
+    entity_id = request.args.get('entity_id')
+    my_music = MyMusic()
+    my_music.toggle_favorite(search_type, entity_id)
+    if target == 'searched':
+        return redirect(url_for('searched', search_type=search_type, search_text=search_text))
+    elif target == 'selected':
+        return redirect(url_for('selected', search_type=search_type, id=entity_id))
+    else:
+        return redirect('home')
 
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required

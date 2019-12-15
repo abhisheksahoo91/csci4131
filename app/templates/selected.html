@@ -4,7 +4,7 @@
 {% if data.type == 'album' %}
 <div class="row my-5">
     <legend class="border-bottom m-2 text-center display-4">Album</legend>
-    <div class="col-4 justify-content-center m-2 py-5">
+    <div class="col-4 justify-content-center m-2 py-5 my-sticky-top">
         <img id="{{data.type}}_{{ data.id }}" src="{{ data.cover_big }}" class="card-img-top cursor-pointer" alt="..."
             onclick="playSongs(this.id)">
         <div class="text-center my-3 h4">
@@ -81,7 +81,7 @@
 {% elif data.type == 'artist' %}
 <div class="row my-5">
     <legend class="border-bottom m-2 text-center display-4">Artist</legend>
-    <div class="col-4 justify-content-center m-2 py-5">
+    <div class="col-4 justify-content-center m-2 py-5 my-sticky-top">
         <img src="{{ data.picture_big }}" class="card-img-top" alt="...">
         <div class="text-center my-3 h4">
             {{ data.name }}
@@ -127,7 +127,7 @@
 {% elif data.type == 'playlist' %}
 <div class="row my-5">
     <legend class="border-bottom m-2 text-center display-4">Playlist</legend>
-    <div class="col-4 justify-content-center m-2 py-5">
+    <div class="col-4 justify-content-center m-2 py-5 my-sticky-top">
         <img id="{{data.type}}_{{ data.id }}" src="{{ data.picture_big }}" class="card-img-top cursor-pointer" alt="..."
             onclick="playSongs(this.id)">
         <div class="text-center my-3 h4">

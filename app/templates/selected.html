@@ -1,10 +1,26 @@
 {% extends "layout.html" %}
 {% block content %}
-
 {% if data.type == 'album' %}
 <div class="row my-5">
     <legend class="border-bottom m-2 text-center display-4">Album</legend>
     <div class="col-4 justify-content-center m-2 py-5 my-sticky-top">
+        <div class="justify-content-center bg-transparent pb-2">
+            {% if data.favorite %}
+            <div class="text-center">
+                <a class="btn btn-light justify-content-center"
+                    href="{{ url_for('favorite', target='selected', target_param1=data.type , target_param2=data.id, search_type=data.type, entity_id=data.id) }}">
+                    <i class="far fa-thumbs-down fa-2x" aria-hidden="true"></i>
+                </a>
+            </div>
+            {% else %}
+            <div class="text-center">
+                <a class="btn btn-light justify-content-center"
+                    href="{{ url_for('favorite', target='selected', target_param1=data.type , target_param2=data.id, search_type=data.type, entity_id=data.id) }}">
+                    <i class="fas fa-thumbs-up fa-2x" aria-hidden="true"></i>
+                </a>
+            </div>
+            {% endif %}
+        </div>
         <img id="{{data.type}}_{{ data.id }}" src="{{ data.cover_big }}" class="card-img-top cursor-pointer" alt="..."
             onclick="playSongs(this.id)">
         <div class="text-center my-3 h4">
@@ -21,7 +37,6 @@
                 </div>
                 {% endfor %}
             </div>
-
             <div class="col-6 text-lg-right font-weight-bold pr-2">
                 Artist(s)
             </div>
@@ -34,21 +49,18 @@
                 {% endif %}
                 {% endfor %}
             </div>
-
             <div class="col-6 font-weight-bold text-lg-right pr-2">
                 Release Date
             </div>
             <div class="col-6 pl-2 text-lg">
                 {{ data.release_date }}
             </div>
-
             <div class="col-6 font-weight-bold text-lg-right pr-2">
                 # of Fans
             </div>
             <div class="col-6 pl-2 text-lg">
                 {{ data.fans }}
             </div>
-
             <div class="col-6 font-weight-bold text-lg-right pr-2">
                 # of Tracks
             </div>
@@ -57,9 +69,7 @@
             </div>
         </div>
     </div>
-
     <div class="col-7 m-2 py-5">
-
         {% for track in data.tracks.data %}
         <div class="row m-2 text-lg">
             <div id="track_{{ track.id }}" class="col-8 cursor-pointer" onclick="playSongs(this.id)">
@@ -72,7 +82,23 @@
                     </a>
                 </div>
             </div>
-            <div class="col-2 text-right">Favorite</div>
+            <div class="justify-content-center bg-transparent pb-2 col-3">
+                {% if track.favorite %}
+                <div class="text-center">
+                    <a class="btn btn-light justify-content-center"
+                        href="{{ url_for('favorite', target='selected', target_param1=data.type , target_param2=data.id, search_type='track', entity_id=track.id) }}">
+                        <i class="far fa-thumbs-down fa-2x" aria-hidden="true"></i>
+                    </a>
+                </div>
+                {% else %}
+                <div class="text-center">
+                    <a class="btn btn-light justify-content-center"
+                        href="{{ url_for('favorite', target='selected', target_param1=data.type , target_param2=data.id, search_type='track', entity_id=track.id) }}">
+                        <i class="fas fa-thumbs-up fa-2x" aria-hidden="true"></i>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
         </div>
         <hr>
         {% endfor %}
@@ -82,6 +108,23 @@
 <div class="row my-5">
     <legend class="border-bottom m-2 text-center display-4">Artist</legend>
     <div class="col-4 justify-content-center m-2 py-5 my-sticky-top">
+        <div class="justify-content-center bg-transparent pb-2">
+            {% if data.favorite %}
+            <div class="text-center">
+                <a class="btn btn-light justify-content-center"
+                    href="{{ url_for('favorite', target='selected', target_param1=data.type , target_param2=data.id, search_type=data.type, entity_id=data.id) }}">
+                    <i class="far fa-thumbs-down fa-2x" aria-hidden="true"></i>
+                </a>
+            </div>
+            {% else %}
+            <div class="text-center">
+                <a class="btn btn-light justify-content-center"
+                    href="{{ url_for('favorite', target='selected', target_param1=data.type , target_param2=data.id, search_type=data.type, entity_id=data.id) }}">
+                    <i class="fas fa-thumbs-up fa-2x" aria-hidden="true"></i>
+                </a>
+            </div>
+            {% endif %}
+        </div>
         <img src="{{ data.picture_big }}" class="card-img-top" alt="...">
         <div class="text-center my-3 h4">
             {{ data.name }}
@@ -116,18 +159,50 @@
                         {{ track.album.title }}
                     </a>
                 </div>
-            </div id="track_{{ track.id }}">
-            <div class="col-2 text-right">Favorite</div>
+            </div>
+            <div class="justify-content-center bg-transparent pb-2 col-4">
+                {% if track.favorite %}
+                <div class="text-center">
+                    <a class="btn btn-light justify-content-center"
+                        href="{{ url_for('favorite', target='selected', target_param1=data.type , target_param2=data.id, search_type='track', entity_id=track.id) }}">
+                        <i class="far fa-thumbs-down fa-2x" aria-hidden="true"></i>
+                    </a>
+                </div>
+                {% else %}
+                <div class="text-center">
+                    <a class="btn btn-light justify-content-center"
+                        href="{{ url_for('favorite', target='selected', target_param1=data.type , target_param2=data.id, search_type='track', entity_id=track.id) }}">
+                        <i class="fas fa-thumbs-up fa-2x" aria-hidden="true"></i>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
         </div>
         <hr>
         {% endfor %}
     </div>
 </div>
-
 {% elif data.type == 'playlist' %}
 <div class="row my-5">
     <legend class="border-bottom m-2 text-center display-4">Playlist</legend>
     <div class="col-4 justify-content-center m-2 py-5 my-sticky-top">
+        <div class="justify-content-center bg-transparent pb-2">
+            {% if data.favorite %}
+            <div class="text-center">
+                <a class="btn btn-light justify-content-center"
+                    href="{{ url_for('favorite', target='selected', target_param1=data.type , target_param2=data.id, search_type=data.type, entity_id=data.id) }}">
+                    <i class="far fa-thumbs-down fa-2x" aria-hidden="true"></i>
+                </a>
+            </div>
+            {% else %}
+            <div class="text-center">
+                <a class="btn btn-light justify-content-center"
+                    href="{{ url_for('favorite', target='selected', target_param1=data.type , target_param2=data.id, search_type=data.type, entity_id=data.id) }}">
+                    <i class="fas fa-thumbs-up fa-2x" aria-hidden="true"></i>
+                </a>
+            </div>
+            {% endif %}
+        </div>
         <img id="{{data.type}}_{{ data.id }}" src="{{ data.picture_big }}" class="card-img-top cursor-pointer" alt="..."
             onclick="playSongs(this.id)">
         <div class="text-center my-3 h4">
@@ -140,14 +215,12 @@
             <div class="col-6 pl-2 text-lg">
                 {{ data.creation_date }}
             </div>
-
             <div class="col-6 font-weight-bold text-lg-right pr-2">
                 # of Fans
             </div>
             <div class="col-6 pl-2 text-lg">
                 {{ data.fans }}
             </div>
-
             <div class="col-6 font-weight-bold text-lg-right pr-2">
                 # of Tracks
             </div>
@@ -156,15 +229,13 @@
             </div>
         </div>
     </div>
-
-    <div class="col-7 m-2 py-5">
-
+    <div class="col-7 ml-2 py-5">
         {% for track in data.tracks.data %}
         <div class="row m-2 text-lg">
-            <div class="col-2">
-                <img src="{{ track.album.cover_small }}" alt="...">
+            <div class="col-4">
+                <img class="card-img-top" src="{{ track.album.cover_medium }}" alt="...">
             </div>
-            <div id="track_{{ track.id }}" class="col-8 cursor-pointer" onclick="playSongs(this.id)">
+            <div id="track_{{ track.id }}" class="col-6 cursor-pointer" onclick="playSongs(this.id)">
                 <div class="font-weight-bold">
                     {{ track.title }}
                 </div>
@@ -188,7 +259,23 @@
                     </div>
                 </div>
             </div>
-            <div class="col-2 text-right">Favorite</div>
+            <div class="justify-content-center bg-transparent pb-2 col-2">
+                {% if track.favorite %}
+                <div class="text-center">
+                    <a class="btn btn-light justify-content-center"
+                        href="{{ url_for('favorite', target='selected', target_param1=data.type , target_param2=data.id, search_type='track', entity_id=track.id) }}">
+                        <i class="far fa-thumbs-down fa-2x" aria-hidden="true"></i>
+                    </a>
+                </div>
+                {% else %}
+                <div class="text-center">
+                    <a class="btn btn-light justify-content-center"
+                        href="{{ url_for('favorite', target='selected', target_param1=data.type , target_param2=data.id, search_type='track', entity_id=track.id) }}">
+                        <i class="fas fa-thumbs-up fa-2x" aria-hidden="true"></i>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
         </div>
         <hr>
         {% endfor %}
@@ -197,27 +284,40 @@
 {% elif data.type == 'track' %}
 <div class="row my-5">
     <legend class="border-bottom m-2 text-center display-4">Track</legend>
-    <div class="col-12 mb-5 row">
-            <div class="col-8">
-                <div class="text-lg font-weight-bold">{{ data.title }}</div>
-                <div class="row pt-3">
-                    <div class="col-6 font-weight-bold text-sm">Release Date</div>
-                    <div class="col-6 font-weight-bold text-sm">Rank</div>
-                    <div class="col-6 text-sm">{{ data.release_date }}</div>
-                    <div class="col-6 text-sm">{{ data.rank }}</div>
-                </div>
+    <div id="{{data.type}}_{{data.id}}" class="col-12 mb-5 row cursor-pointer" onclick="playSongs(this.id)">
+        <div class="col-8">
+            <div class="text-lg font-weight-bold">{{ data.title }}</div>
+            <div class="row pt-3">
+                <div class="col-6 font-weight-bold text-sm">Release Date</div>
+                <div class="col-6 font-weight-bold text-sm">Rank</div>
+                <div class="col-6 text-sm">{{ data.release_date }}</div>
+                <div class="col-6 text-sm">{{ data.rank }}</div>
             </div>
-            <div class="col-4">
-                Favorite
+        </div>
+        <div class="justify-content-center bg-transparent pb-2 col-4">
+            {% if data.favorite %}
+            <div class="text-center">
+                <a class="btn btn-light justify-content-center"
+                    href="{{ url_for('favorite', target='selected', target_param1=data.type , target_param2=data.id, search_type=data.type, entity_id=data.id) }}">
+                    <i class="far fa-thumbs-down fa-2x" aria-hidden="true"></i>
+                </a>
             </div>
+            {% else %}
+            <div class="text-center">
+                <a class="btn btn-light justify-content-center"
+                    href="{{ url_for('favorite', target='selected', target_param1=data.type , target_param2=data.id, search_type=data.type, entity_id=data.id) }}">
+                    <i class="fas fa-thumbs-up fa-2x" aria-hidden="true"></i>
+                </a>
+            </div>
+            {% endif %}
+        </div>
     </div>
-
-    <div class="col-4 justify-content-center m-2">
+    <div class="col-4 justify-content-center m-2 pr-5">
         <img id="album_{{ data.album.id }}" src="{{ data.album.cover_big }}" class="card-img-top cursor-pointer"
             alt="..." onclick="playSongs(this.id)">
-        <div class="row">
+        <div class="row pt-2">
             <div class="col-6 font-weight-bold text-lg-right pr-2">
-                Title
+                Album Title
             </div>
             <a href="{{ url_for('selected', search_type='album', id=data.album.id) }}" class="col-6 pl-2 text-lg">
                 {{ data.album.title }}
@@ -230,20 +330,23 @@
             </div>
         </div>
     </div>
-    <div class="col-4 justify-content-center m-2">
+    <div class="col-4 justify-content-center m-2 pl-5">
         {% for artist in data.contributors %}
-        <div class="my-3">
+        <div class="mb-5">
             <a href="{{ url_for('selected', search_type='artist', id=artist.id) }}">
                 <img src="{{ artist.picture_big }}" class="card-img-top" alt="...">
             </a>
-            <div class="text-center my-3 h4">
-                {{ artist.name }}
+            <div class="row pt-2">
+                <div class="col-6 font-weight-bold text-lg-right pr-2">
+                    Artist
+                </div>
+                <a href="{{ url_for('selected', search_type='artist', id=artist.id) }}" class="col-6 pl-2 text-lg">
+                    {{ artist.name }}
+                </a>
             </div>
         </div>
         {% endfor %}
     </div>
-
 </div>
 {% endif %}
-
 {% endblock content %}

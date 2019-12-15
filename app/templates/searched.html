@@ -5,6 +5,7 @@
 <div class="py-5">
     <div>
         {% if search_type == 'album' %}
+        <legend class="m-3 text-center display-4">Albums</legend>
         {% for element in data %}
         <legend class="border-bottom m-2">{{ element.genre }}</legend>
         <div class="row">
@@ -23,15 +24,19 @@
                             alt="..." onclick="playSongs(this.id)">
                         <div class="card-footer justify-content-center bg-transparent">
                             {% if e.favorite %}
-                            <a class="btn btn-light border-danger"
-                                href="{{ url_for('favorite', target='searched', search_type=search_type, search_text=search_text, entity_id=e.id) }}">
-                                Remove
-                            </a>
+                            <div class="text-center">
+                                <a class="btn btn-light justify-content-center"
+                                    href="{{ url_for('favorite', target='searched', target_param1=search_type, target_param2=search_text, search_type=search_type, search_text=search_text, entity_id=e.id) }}">
+                                    <i class="far fa-thumbs-down fa-2x" aria-hidden="true"></i>
+                                </a>
+                            </div>
                             {% else %}
-                            <a class="btn btn-light border-success"
-                                href="{{ url_for('favorite', target='searched', search_type=search_type, search_text=search_text, entity_id=e.id) }}">
-                                Add
-                            </a>
+                            <div class="text-center">
+                                <a class="btn btn-light justify-content-center"
+                                    href="{{ url_for('favorite', target='searched', target_param1=search_type, target_param2=search_text, search_type=search_type, search_text=search_text, entity_id=e.id) }}">
+                                    <i class="fas fa-thumbs-up fa-2x" aria-hidden="true"></i>
+                                </a>
+                            </div>
                             {% endif %}
                         </div>
                     </div>
@@ -41,6 +46,7 @@
             {% endfor %}
 
             {% elif search_type == 'artist' %}
+            <legend class="border-bottom m-3 text-center display-4">Artists</legend>
             <div class="row">
                 {% for element in data %}
                 <div class="col-3 mb-5">
@@ -51,24 +57,30 @@
                         </div>
                         <img id="{{search_type}}_{{ element.id }}" src="{{ element.picture_big }}"
                             class="card-img-top cursor-pointer" alt="..." onclick="playSongs(this.id)">
-                        <div class="card-body container">
-                            <div class="row form-group bg-transparent">
-                                <a class="btn btn-light col-6"
-                                    href="{{ url_for('selected', search_type='track', id=id) }}">
-                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                                </a>
-                                <a class="btn btn-light col-6" href="#" role="button">
-                                    <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-                                </a>
-
+                            <div class="card-footer justify-content-center bg-transparent">
+                                {% if element.favorite %}
+                                <div class="text-center">
+                                    <a class="btn btn-light justify-content-center"
+                                        href="{{ url_for('favorite', target='searched', target_param1=search_type, target_param2=search_text, search_type=search_type, search_text=search_text, entity_id=element.id) }}">
+                                        <i class="far fa-thumbs-down fa-2x" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                                {% else %}
+                                <div class="text-center">
+                                    <a class="btn btn-light justify-content-center"
+                                        href="{{ url_for('favorite', target='searched', target_param1=search_type, target_param2=search_text, search_type=search_type, search_text=search_text, entity_id=element.id) }}">
+                                        <i class="fas fa-thumbs-up fa-2x" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                                {% endif %}
                             </div>
-                        </div>
                     </div>
                 </div>
                 {% endfor %}
             </div>
 
             {% elif search_type == 'playlist' %}
+            <legend class="border-bottom m-3 text-center display-4">Playlists</legend>
             <div class="row">
                 {% for element in data %}
                 <div class="col-3 mb-5">
@@ -79,30 +91,36 @@
                         </div>
                         <img id="{{search_type}}_{{ element.id }}" src="{{ element.picture_big }}"
                             class="card-img-top cursor-pointer" alt="..." onclick="playSongs(this.id)">
-                        <div class="card-body container">
-                            <div class="row form-group bg-transparent">
-                                <a class="btn btn-light col-6"
-                                    href="{{ url_for('selected', search_type='track', id=id) }}">
-                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                                </a>
-                                <a class="btn btn-light col-6" href="#" role="button">
-                                    <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-                                </a>
-
+                            <div class="card-footer justify-content-center bg-transparent">
+                                {% if element.favorite %}
+                                <div class="text-center">
+                                    <a class="btn btn-light justify-content-center"
+                                        href="{{ url_for('favorite', target='searched', target_param1=search_type, target_param2=search_text, search_type=search_type, search_text=search_text, entity_id=element.id) }}">
+                                        <i class="far fa-thumbs-down fa-2x" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                                {% else %}
+                                <div class="text-center">
+                                    <a class="btn btn-light justify-content-center"
+                                        href="{{ url_for('favorite', target='searched', target_param1=search_type, target_param2=search_text, search_type=search_type, search_text=search_text, entity_id=element.id) }}">
+                                        <i class="fas fa-thumbs-up fa-2x" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                                {% endif %}
                             </div>
-                        </div>
                     </div>
                 </div>
                 {% endfor %}
             </div>
 
             {% elif search_type == 'track' %}
+            <legend class="border-bottom m-3 text-center display-4">Tracks</legend>
             <div class="row">
                 {% for element in data %}
                 <div id="{{search_type}}_{{element.id}}" class="col-12 text-lg font-weigth-bold cursor-pointer my-3"
                     onclick="playSongs(this.id)">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-4">
                             <a href="{{ url_for('selected', search_type=search_type, id=element.id) }}">
                                 {{ element.title }}
                             </a>
@@ -113,9 +131,26 @@
                         <div class="col-3">
                             {{ element.album.title }}
                         </div>
+                        <div class="col-2">
+                            {% if element.favorite %}
+                                <div class="text-center">
+                                    <a class="btn btn-light justify-content-center"
+                                        href="{{ url_for('favorite', target='searched', target_param1=search_type, target_param2=search_text, search_type=search_type, search_text=search_text, entity_id=element.id) }}">
+                                        <i class="far fa-thumbs-down fa-2x" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                                {% else %}
+                                <div class="text-center">
+                                    <a class="btn btn-light justify-content-center"
+                                        href="{{ url_for('favorite', target='searched', target_param1=search_type, target_param2=search_text, search_type=search_type, search_text=search_text, entity_id=element.id) }}">
+                                        <i class="fas fa-thumbs-up fa-2x" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                                {% endif %}
+                        </div>
                     </div>
                 </div>
-                <hr>
+                <legend class="border-bottom m-2"></legend>
                 {% endfor %}
             </div>
             {% endif %}

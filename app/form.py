@@ -69,7 +69,3 @@ class UpdateProfileForm(FlaskForm):
     def validate_password(self, new_password):
         if new_password != '' and ' ' in new_password:
             raise ValidationError('The password cannot contain white space.')
-
-class SearchForm(FlaskForm):
-    text = StringField('Search Text', validators=[DataRequired()])
-    submit = SubmitField('Search')

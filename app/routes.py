@@ -55,6 +55,10 @@ def logout():
     flash('You logged out successfully!', 'success')
     return redirect(url_for('home'))
 
+@app.route('/test/<search_type>/<search_text>', methods=['GET', 'POST'])
+def test(search_type, search_text):
+    return render_template('test.html', name=search_text, val=search_type)
+
 @app.route('/search/<search_type>', methods=['GET', 'POST'])
 @login_required
 def search(search_type):
@@ -66,9 +70,11 @@ def search(search_type):
         
     return render_template('search.html', form=form, data=data, search_type=search_type)
 
-@app.route('/searched/<search_type>/<search_text>', methods=['GET', 'POST'])
+@app.route('/searched', methods=['GET', 'POST'])
 @login_required
-def searched(search_type, search_text):
+def searched():
+    search_type = request.args.get('search_type')
+    search_text = request.args.get('search_text')
     my_music = MyMusic()
     data = my_music.search_entity(search_type, search_text)
     # Format album data to group them based on genre
@@ -81,21 +87,24 @@ def searched(search_type, search_text):
 def selected(search_type, id):
     my_music = MyMusic()
     data = my_music.get_entity_byId(search_type, id)
+    print(data)
     return render_template('selected.html', data=data)
 
 @app.route('/favorite', methods=['GET', 'POST'])
 @login_required
 def favorite():
     target = request.args.get('target')
+    target_param1 = request.args.get('target_param1')
+    target_param2 = request.args.get('target_param2')
     search_type = request.args.get('search_type')
-    search_text = request.args.get('search_text')
     entity_id = request.args.get('entity_id')
+
     my_music = MyMusic()
     my_music.toggle_favorite(search_type, entity_id)
     if target == 'searched':
-        return redirect(url_for('searched', search_type=search_type, search_text=search_text))
+        return redirect(url_for('searched', search_type=target_param1, search_text=target_param2))
     elif target == 'selected':
-        return redirect(url_for('selected', search_type=search_type, id=entity_id))
+        return redirect(url_for('selected', search_type=target_param1, id=target_param2))
     else:
         return redirect('home')
 

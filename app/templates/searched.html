@@ -2,7 +2,7 @@
 
 {% block content %}
 {% if data %}
-<div class="py-5">
+<div>
     <div>
         {% if search_type == 'album' %}
         <legend class="m-3 text-center display-4">Albums</legend>
@@ -26,14 +26,14 @@
                             {% if e.favorite %}
                             <div class="text-center">
                                 <a class="btn btn-light justify-content-center"
-                                    href="{{ url_for('favorite', target='searched', target_param1=search_type, target_param2=search_text, search_type=search_type, search_text=search_text, entity_id=e.id) }}">
+                                    href="{{ url_for('update_favorite', target='searched', target_param1=search_type, target_param2=search_text, search_type=search_type, search_text=search_text, entity_id=e.id) }}">
                                     <i class="far fa-thumbs-down fa-2x" aria-hidden="true"></i>
                                 </a>
                             </div>
                             {% else %}
                             <div class="text-center">
                                 <a class="btn btn-light justify-content-center"
-                                    href="{{ url_for('favorite', target='searched', target_param1=search_type, target_param2=search_text, search_type=search_type, search_text=search_text, entity_id=e.id) }}">
+                                    href="{{ url_for('update_favorite', target='searched', target_param1=search_type, target_param2=search_text, search_type=search_type, search_text=search_text, entity_id=e.id) }}">
                                     <i class="fas fa-thumbs-up fa-2x" aria-hidden="true"></i>
                                 </a>
                             </div>
@@ -55,25 +55,25 @@
                             <a
                                 href="{{ url_for('selected', search_type=search_type, id=element.id) }}">{{ element.name }}</a>
                         </div>
-                        <img id="{{search_type}}_{{ element.id }}" src="{{ element.picture_big }}"
-                            class="card-img-top cursor-pointer" alt="..." onclick="playSongs(this.id)">
-                            <div class="card-footer justify-content-center bg-transparent">
-                                {% if element.favorite %}
-                                <div class="text-center">
-                                    <a class="btn btn-light justify-content-center"
-                                        href="{{ url_for('favorite', target='searched', target_param1=search_type, target_param2=search_text, search_type=search_type, search_text=search_text, entity_id=element.id) }}">
-                                        <i class="far fa-thumbs-down fa-2x" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                                {% else %}
-                                <div class="text-center">
-                                    <a class="btn btn-light justify-content-center"
-                                        href="{{ url_for('favorite', target='searched', target_param1=search_type, target_param2=search_text, search_type=search_type, search_text=search_text, entity_id=element.id) }}">
-                                        <i class="fas fa-thumbs-up fa-2x" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                                {% endif %}
+                        <img id="{{search_type}}_{{ element.id }}" src="{{ element.picture_big }}" class="card-img-top"
+                            alt="...">
+                        <div class="card-footer justify-content-center bg-transparent">
+                            {% if element.favorite %}
+                            <div class="text-center">
+                                <a class="btn btn-light justify-content-center"
+                                    href="{{ url_for('update_favorite', target='searched', target_param1=search_type, target_param2=search_text, search_type=search_type, search_text=search_text, entity_id=element.id) }}">
+                                    <i class="far fa-thumbs-down fa-2x" aria-hidden="true"></i>
+                                </a>
                             </div>
+                            {% else %}
+                            <div class="text-center">
+                                <a class="btn btn-light justify-content-center"
+                                    href="{{ url_for('update_favorite', target='searched', target_param1=search_type, target_param2=search_text, search_type=search_type, search_text=search_text, entity_id=element.id) }}">
+                                    <i class="fas fa-thumbs-up fa-2x" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
                 {% endfor %}
@@ -91,23 +91,23 @@
                         </div>
                         <img id="{{search_type}}_{{ element.id }}" src="{{ element.picture_big }}"
                             class="card-img-top cursor-pointer" alt="..." onclick="playSongs(this.id)">
-                            <div class="card-footer justify-content-center bg-transparent">
-                                {% if element.favorite %}
-                                <div class="text-center">
-                                    <a class="btn btn-light justify-content-center"
-                                        href="{{ url_for('favorite', target='searched', target_param1=search_type, target_param2=search_text, search_type=search_type, search_text=search_text, entity_id=element.id) }}">
-                                        <i class="far fa-thumbs-down fa-2x" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                                {% else %}
-                                <div class="text-center">
-                                    <a class="btn btn-light justify-content-center"
-                                        href="{{ url_for('favorite', target='searched', target_param1=search_type, target_param2=search_text, search_type=search_type, search_text=search_text, entity_id=element.id) }}">
-                                        <i class="fas fa-thumbs-up fa-2x" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                                {% endif %}
+                        <div class="card-footer justify-content-center bg-transparent">
+                            {% if element.favorite %}
+                            <div class="text-center">
+                                <a class="btn btn-light justify-content-center"
+                                    href="{{ url_for('update_favorite', target='searched', target_param1=search_type, target_param2=search_text, search_type=search_type, search_text=search_text, entity_id=element.id) }}">
+                                    <i class="far fa-thumbs-down fa-2x" aria-hidden="true"></i>
+                                </a>
                             </div>
+                            {% else %}
+                            <div class="text-center">
+                                <a class="btn btn-light justify-content-center"
+                                    href="{{ url_for('update_favorite', target='searched', target_param1=search_type, target_param2=search_text, search_type=search_type, search_text=search_text, entity_id=element.id) }}">
+                                    <i class="fas fa-thumbs-up fa-2x" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
                 {% endfor %}
@@ -133,20 +133,20 @@
                         </div>
                         <div class="col-2">
                             {% if element.favorite %}
-                                <div class="text-center">
-                                    <a class="btn btn-light justify-content-center"
-                                        href="{{ url_for('favorite', target='searched', target_param1=search_type, target_param2=search_text, search_type=search_type, search_text=search_text, entity_id=element.id) }}">
-                                        <i class="far fa-thumbs-down fa-2x" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                                {% else %}
-                                <div class="text-center">
-                                    <a class="btn btn-light justify-content-center"
-                                        href="{{ url_for('favorite', target='searched', target_param1=search_type, target_param2=search_text, search_type=search_type, search_text=search_text, entity_id=element.id) }}">
-                                        <i class="fas fa-thumbs-up fa-2x" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                                {% endif %}
+                            <div class="text-center">
+                                <a class="btn btn-light justify-content-center"
+                                    href="{{ url_for('update_favorite', target='searched', target_param1=search_type, target_param2=search_text, search_type=search_type, search_text=search_text, entity_id=element.id) }}">
+                                    <i class="far fa-thumbs-down fa-lg" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                            {% else %}
+                            <div class="text-center">
+                                <a class="btn btn-light justify-content-center"
+                                    href="{{ url_for('update_favorite', target='searched', target_param1=search_type, target_param2=search_text, search_type=search_type, search_text=search_text, entity_id=element.id) }}">
+                                    <i class="fas fa-thumbs-up fa-lg" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

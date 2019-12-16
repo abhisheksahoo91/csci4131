@@ -2,6 +2,7 @@ import requests
 from app import logging, db
 from app.dbclass import Genre, Favorite
 from flask_login import current_user
+from sqlalchemy import desc
 
 class MyMusic:
     # URL
@@ -32,6 +33,14 @@ class MyMusic:
             self.delete_favorite(fav)
         else:
             self.add_favorite(entity_type, entity_id)
+
+    def get_favorite_by_type(self, entity_type):
+        data = []
+        fav = Favorite.query.filter_by(user_id=current_user.id, entity_type=entity_type).order_by(desc(Favorite.date_created)).all()
+        for f in fav:
+            d = self.get_entity_byId(entity_type, f.entity_id)
+            data.append(d)
+        return data
 
     def search_entity(self, name, value):
         QUERY_URL = 'search/{}?q={}'.format(name, value)

@@ -12,43 +12,71 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous"></head>
-    <!-- Local CSS -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
-    <script type="text/javascript" src="{{ url_for('static', filename='script.js') }}"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+        integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <title>MusicCloud</title>
+</head>
+<!-- Local CSS -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+<script type="text/javascript" src="{{ url_for('static', filename='script.js') }}"></script>
 </head>
 
-<body onload="myOnload()">
+<body onload="myOnload()" class="">
     <header class="site-header">
-        <nav class="navbar fixed-top navbar-expand-lg navbar-light"  style="background-color: #e3f2fd; height: 80px;">
+        <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-danger"
+            style="background-color: #c3073f; height: 80px;">
             <div class="container">
-                <a class="navbar-brand pr-5" href="{{ url_for('home') }}">MyMusic</a>
+                <a class="navbar-brand pr-5 btn text-center-lg" href="{{ url_for('home') }}">
+                    <i class="fas fa-music fa-md" aria-hidden="true"></i> Music Cloud <i class="fab fa-soundcloud fa-lg"
+                        aria-hidden="true"></i>
+                </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
+                {% if current_user.is_authenticated %}
+                <ul class="nav nav-pills mx-3">
+                    <li class="nav-item dropdown">
+                        <a class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                            aria-haspopup="true" aria-expanded="false"><i class="fas fa-heart"></i> Favorite</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{{ url_for('favorite', search_type='album') }}"><i class="fas fa-compact-disc"></i> Album</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{ url_for('favorite', search_type='artist') }}"><i class="fas fa-user"></i> Artist</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item"
+                                href="{{ url_for('favorite', search_type='playlist') }}"><i class="fas fa-clipboard-list"></i> Playlist</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{ url_for('favorite', search_type='track') }}"><i class="fas fa-music"></i> Track</a>
+                        </div>
+                    </li>
+                </ul>
+                {% endif %}
+
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         {% if current_user.is_authenticated %}
                         <li class="nav-item active">
-                            <form class="form-inline" action="{{ url_for('searched', search_type=search_type, search_text=search_text) }}">
+                            <form class="form-inline"
+                                action="{{ url_for('searched', search_type=search_type, search_text=search_text) }}">
                                 <div class="form-group m-2 pl-5">
-                                    <select class="form-control" name="search_type">
-                                      <option value="album">Album</option>
-                                      <option value="artist">Artist</option>
-                                      <option value="playlist" >Playlist</option>
-                                      <option value="track">Track</option>
+                                    <select id="search_type_id" class="form-control" name="search_type">
+                                        <option value="album">Album</option>
+                                        <option value="artist">Artist</option>
+                                        <option value="playlist">Playlist</option>
+                                        <option value="track">Track</option>
                                     </select>
-                                </div> 
+                                </div>
                                 <div class="form-group">
-                                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" type="text" name="search_text" required>
+                                    <input class="form-control mr-sm-2" type="search" placeholder="Search"
+                                        aria-label="Search" type="text" name="search_text" required>
                                     <div class="valid-feedback">Valid.</div>
                                     <div class="invalid-feedback">Please fill out this field.</div>
                                 </div>
-                                
-                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+
+                                <button class="btn btn-outline-light my-2 my-sm-0" type="submit"><i class="fas fa-search"></i> Search</button>
                             </form>
                         </li>
                         {% endif %}
@@ -75,7 +103,7 @@
             </div>
         </nav>
     </header>
-    <main role="main" class="my-top-pad pb-5">
+    <main role="main" class="my-top-pad mb-5 pb-5">
         <div class="container">
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}

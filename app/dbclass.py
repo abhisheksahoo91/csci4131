@@ -1,3 +1,4 @@
+from datetime import datetime
 from app import db, login_manager
 from flask_login import UserMixin
 
@@ -37,5 +38,6 @@ class Favorite(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     entity_type = db.Column(db.String(20), nullable=False)
     entity_id = db.Column(db.Integer, nullable=False)
+    date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     def __repr__(self):
         return f"Favorite('{self.user_id}', '{self.entity_id}', '{self.entity_type}')"

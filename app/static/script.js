@@ -44,3 +44,9 @@ function playSongs(divId) {
         DZ.player.playTracks([id])
     }
 }
+
+$( document ).ready(function() {
+    let search_type_select = document.getElementById('search_type_id')
+    search_type = search_type_select.value
+    console.log(search_type)
+});

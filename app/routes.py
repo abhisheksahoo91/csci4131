@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request
 from app import app, db, bcrypt, logging
 from app.dbclass import User
-from app.form import RegistrationForm, LoginForm, UpdateProfileForm, SearchForm
+from app.form import RegistrationForm, LoginForm, UpdateProfileForm
 from app.mymusic import MyMusic
 from flask_login import login_user, current_user, logout_user, login_required
 import requests, ast
@@ -59,17 +59,6 @@ def logout():
 def test(search_type, search_text):
     return render_template('test.html', name=search_text, val=search_type)
 
-@app.route('/search/<search_type>', methods=['GET', 'POST'])
-@login_required
-def search(search_type):
-    form = SearchForm()
-    data=None
-    if form.validate_on_submit():
-        search_text = form.text.data
-        return redirect(url_for('searched', search_type=search_type, search_text=search_text))
-        
-    return render_template('search.html', form=form, data=data, search_type=search_type)
-
 @app.route('/searched', methods=['GET', 'POST'])
 @login_required
 def searched():
@@ -90,9 +79,9 @@ def selected(search_type, id):
     print(data)
     return render_template('selected.html', data=data)
 
-@app.route('/favorite', methods=['GET', 'POST'])
+@app.route('/update_favorite', methods=['GET', 'POST'])
 @login_required
-def favorite():
+def update_favorite():
     target = request.args.get('target')
     target_param1 = request.args.get('target_param1')
     target_param2 = request.args.get('target_param2')
@@ -107,6 +96,17 @@ def favorite():
         return redirect(url_for('selected', search_type=target_param1, id=target_param2))
     else:
         return redirect('home')
+
+@app.route('/favorite', methods=['GET', 'POST'])
+@login_required
+def favorite():
+    search_type = request.args.get('search_type')
+    my_music = MyMusic()
+    data = my_music.get_favorite_by_type(search_type)
+    if data == None or data == []:
+        flash('You have not added any {}(s) to your favorite yet!'.format(search_type), 'danger')
+    return render_template('favorite.html', data=data)
+
 
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required

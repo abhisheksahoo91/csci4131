@@ -4,7 +4,7 @@ from app.dbclass import Genre, Favorite
 from flask_login import current_user
 from sqlalchemy import desc
 
-class MyMusic:
+class MusicCloud:
     # URL
     BASE_URL = 'http://api.deezer.com/'
 
@@ -110,5 +110,4 @@ class MyMusic:
             if search_type != 'track':
                 for track in data.get('tracks').get('data'):
                     track["favorite"] = self.check_favorite(track.get('type'), track.get('id'))
-        #print(data)
         return data

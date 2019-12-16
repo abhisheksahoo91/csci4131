@@ -2,7 +2,7 @@ from flask import render_template, url_for, flash, redirect, request
 from app import app, db, bcrypt, logging
 from app.dbclass import User
 from app.form import RegistrationForm, LoginForm, UpdateProfileForm
-from app.mymusic import MyMusic
+from app.musiccloud import MusicCloud
 from flask_login import login_user, current_user, logout_user, login_required
 import requests, ast
 
@@ -64,19 +64,18 @@ def test(search_type, search_text):
 def searched():
     search_type = request.args.get('search_type')
     search_text = request.args.get('search_text')
-    my_music = MyMusic()
-    data = my_music.search_entity(search_type, search_text)
+    musicCloud = MusicCloud()
+    data = musicCloud.search_entity(search_type, search_text)
     # Format album data to group them based on genre
     if search_type == 'album':
-        data = my_music.group_album_by_genre(data)
+        data = musicCloud.group_album_by_genre(data)
     return render_template('searched.html', data=data, search_type=search_type, search_text=search_text)
 
 @app.route('/selected/<search_type>/<id>', methods=['GET', 'POST'])
 @login_required
 def selected(search_type, id):
-    my_music = MyMusic()
-    data = my_music.get_entity_byId(search_type, id)
-    print(data)
+    musicCloud = MusicCloud()
+    data = musicCloud.get_entity_byId(search_type, id)
     return render_template('selected.html', data=data)
 
 @app.route('/update_favorite', methods=['GET', 'POST'])
@@ -88,8 +87,8 @@ def update_favorite():
     search_type = request.args.get('search_type')
     entity_id = request.args.get('entity_id')
 
-    my_music = MyMusic()
-    my_music.toggle_favorite(search_type, entity_id)
+    musicCloud = MusicCloud()
+    musicCloud.toggle_favorite(search_type, entity_id)
     if target == 'searched':
         return redirect(url_for('searched', search_type=target_param1, search_text=target_param2))
     elif target == 'selected':
@@ -101,8 +100,8 @@ def update_favorite():
 @login_required
 def favorite():
     search_type = request.args.get('search_type')
-    my_music = MyMusic()
-    data = my_music.get_favorite_by_type(search_type)
+    musicCloud = MusicCloud()
+    data = musicCloud.get_favorite_by_type(search_type)
     if data == None or data == []:
         flash('You have not added any {}(s) to your favorite yet!'.format(search_type), 'danger')
     return render_template('favorite.html', data=data)

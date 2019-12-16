@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+
+{% block content %}
+{% if data %}
+{% with search_type = data[0].type %}
+{% if search_type == 'album' %}
+<legend class="border-bottom m-3 text-center display-4">Albums</legend>
+<div class="row">
+    {% for element in data %}
+    <div class="col-3 mb-5">
+        <div class="card border-success">
+            <div class="card-header">
+                <a href="{{ url_for('selected', search_type=search_type, id=element.id) }}">{{ element.title }}</a>
+            </div>
+            <img id="{{search_type}}_{{ element.id }}" src="{{ element.cover_big }}" class="card-img-top cursor-pointer"
+                alt="..." onclick="playSongs(this.id)">
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% elif search_type == 'artist' %}
+<legend class="border-bottom m-3 text-center display-4">Artists</legend>
+<div class="row">
+    {% for element in data %}
+    <div class="col-3 mb-5">
+        <div class="card border-success">
+            <div class="card-header">
+                <a href="{{ url_for('selected', search_type=search_type, id=element.id) }}">{{ element.name }}</a>
+            </div>
+            <img id="{{search_type}}_{{ element.id }}" src="{{ element.picture_big }}" class="card-img-top" alt="...">
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% elif search_type == 'playlist' %}
+<legend class="border-bottom m-3 text-center display-4">Playlists</legend>
+<div class="row">
+    {% for element in data %}
+    <div class="col-3 mb-5">
+        <div class="card border-success">
+            <div class="card-header">
+                <a href="{{ url_for('selected', search_type=search_type, id=element.id) }}">{{ element.title }}</a>
+            </div>
+            <img id="{{search_type}}_{{ element.id }}" src="{{ element.picture_big }}"
+                class="card-img-top cursor-pointer" alt="..." onclick="playSongs(this.id)">
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% elif search_type == 'track' %}
+<legend class="border-bottom m-3 text-center display-4">Tracks</legend>
+<div class="row">
+    {% for element in data %}
+    <div id="{{search_type}}_{{element.id}}" class="col-12 text-lg font-weigth-bold cursor-pointer my-3"
+        onclick="playSongs(this.id)">
+        <div class="row">
+            <div class="col-6">
+                <a href="{{ url_for('selected', search_type=search_type, id=element.id) }}">
+                    {{ element.title }}
+                </a>
+            </div>
+            <div class="col-3">
+                {{ element.artist.name }}
+            </div>
+            <div class="col-3">
+                {{ element.album.title }}
+            </div>
+        </div>
+    </div>
+    <legend class="border-bottom m-2"></legend>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+{% endif %}
+{% endblock content %}

@@ -5,9 +5,9 @@
 <div>
     <div>
         {% if search_type == 'album' %}
-        <legend class="m-3 text-center display-4">Albums</legend>
+        <legend class="m-3 text-center my-legend1">Albums</legend>
         {% for element in data %}
-        <legend class="border-bottom m-2">{{ element.genre }}</legend>
+        <legend class="border-bottom m-2 my-legend2">{{ element.genre }}</legend>
         <div class="row">
             {% for e in element.data %}
             <div class="col-3 mb-5">
@@ -17,7 +17,7 @@
                     <div class="card border-success">
                         {% endif %}
 
-                        <div class="card-header">
+                        <div class="card-header text-center">
                             <a href="{{ url_for('selected', search_type=search_type, id=e.id) }}">{{ e.title }}</a>
                         </div>
                         <img id="{{search_type}}_{{ e.id }}" src="{{ e.cover_big }}" class="card-img-top cursor-pointer"
@@ -46,12 +46,12 @@
             {% endfor %}
 
             {% elif search_type == 'artist' %}
-            <legend class="border-bottom m-3 text-center display-4">Artists</legend>
+            <legend class="border-bottom m-3 text-center my-legend1">Artists</legend>
             <div class="row">
                 {% for element in data %}
                 <div class="col-3 mb-5">
                     <div class="card border-success">
-                        <div class="card-header">
+                        <div class="card-header text-center">
                             <a
                                 href="{{ url_for('selected', search_type=search_type, id=element.id) }}">{{ element.name }}</a>
                         </div>
@@ -80,12 +80,12 @@
             </div>
 
             {% elif search_type == 'playlist' %}
-            <legend class="border-bottom m-3 text-center display-4">Playlists</legend>
+            <legend class="border-bottom m-3 text-center my-legend1">Playlists</legend>
             <div class="row">
                 {% for element in data %}
                 <div class="col-3 mb-5">
                     <div class="card border-success">
-                        <div class="card-header">
+                        <div class="card-header text-center">
                             <a
                                 href="{{ url_for('selected', search_type=search_type, id=element.id) }}">{{ element.title }}</a>
                         </div>
@@ -114,7 +114,7 @@
             </div>
 
             {% elif search_type == 'track' %}
-            <legend class="border-bottom m-3 text-center display-4">Tracks</legend>
+            <legend class="border-bottom m-3 text-center my-legend1">Tracks</legend>
             <div class="row">
                 {% for element in data %}
                 <div id="{{search_type}}_{{element.id}}" class="col-12 text-lg font-weigth-bold cursor-pointer my-3"

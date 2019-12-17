@@ -51,13 +51,9 @@ def login():
 
 @app.route('/logout')
 def logout():
+    flash('Goodbye {}! See you again soon'.format(current_user.firstname), 'success')
     logout_user()
-    flash('You logged out successfully!', 'success')
     return redirect(url_for('home'))
-
-@app.route('/test/<search_type>/<search_text>', methods=['GET', 'POST'])
-def test(search_type, search_text):
-    return render_template('test.html', name=search_text, val=search_type)
 
 @app.route('/searched', methods=['GET', 'POST'])
 @login_required
@@ -69,6 +65,8 @@ def searched():
     # Format album data to group them based on genre
     if search_type == 'album':
         data = musicCloud.group_album_by_genre(data)
+    if data == None or data == []:
+        flash("No results for '{} - {}'. Please refine your search text.".format(search_type, search_text), 'danger')
     return render_template('searched.html', data=data, search_type=search_type, search_text=search_text)
 
 @app.route('/selected/<search_type>/<id>', methods=['GET', 'POST'])

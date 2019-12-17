@@ -2,7 +2,7 @@
 {% block content %}
 {% if data.type == 'album' %}
 <div class="row">
-    <legend class="border-bottom m-2 text-center display-4">Album</legend>
+    <legend class="border-bottom m-2 text-center my-legend1">Album</legend>
     <div class="col-4 justify-content-center m-2 my-sticky-top">
         <div class="justify-content-center bg-transparent pb-2">
             {% if data.favorite %}
@@ -106,7 +106,7 @@
 </div>
 {% elif data.type == 'artist' %}
 <div class="row">
-    <legend class="border-bottom m-2 text-center display-4">Artist</legend>
+    <legend class="border-bottom m-2 text-center my-legend1">Artist</legend>
     <div class="col-4 justify-content-center m-2 my-sticky-top">
         <div class="justify-content-center bg-transparent pb-2">
             {% if data.favorite %}
@@ -184,7 +184,7 @@
 </div>
 {% elif data.type == 'playlist' %}
 <div class="row">
-    <legend class="border-bottom m-2 text-center display-4">Playlist</legend>
+    <legend class="border-bottom m-2 text-center my-legend1">Playlist</legend>
     <div class="col-4 justify-content-center m-2 my-sticky-top">
         <div class="justify-content-center bg-transparent pb-2">
             {% if data.favorite %}
@@ -283,7 +283,7 @@
 </div>
 {% elif data.type == 'track' %}
 <div class="row my-5">
-    <legend class="border-bottom m-2 text-center display-4">Track</legend>
+    <legend class="border-bottom m-2 text-center my-legend1">Track</legend>
     <div id="{{data.type}}_{{data.id}}" class="col-12 mb-5 row cursor-pointer" onclick="playSongs(this.id)">
         <div class="col-8">
             <div class="text-lg font-weight-bold">{{ data.title }}</div>

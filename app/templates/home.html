@@ -1,6 +1,55 @@
 {% extends "layout.html" %}
 {% block content %}
-  <h1>
-    Universal Home Page!
-  </h1>
+<div class="m-3">
+  {% if current_user.is_authenticated %}
+  <legend class="my-legend1 mb-5 text-center">Hello {{current_user.firstname}}! Good to see you again.</legend>
+  <legend class="my-legend2">Did you know?</legend>
+  <div class="mb-5">
+    <p>
+      We provide four search criteria such as albums, artists, playlists and tracks.
+      You can select a category and specify a search string to view all the search results.
+      You can add or remove any of the entities to your favorite list.
+      You can access all the favorite entities ordered by their date of addition with the newest item displayed first.
+      You can always hover on any of the entities and click on them to play the music in background.
+    </p>
+  </div>
+  {% else %}
+
+  <legend class="my-legend1 mb-3 text-center"></legend>
+  <legend class="my-legend2">About Music Cloud</legend>
+  <div class="mb-5">
+    <p>
+      Music Cloud is a free and non-commercial music seach & stream service provider.
+      We provide a friendly and intuitive interface for better user experience. Please register and/or login to access
+      the basic service.
+    </p>
+  </div>
+  <legend class="my-legend2">Development</legend>
+  <div class="mb-5">
+    <p>
+      The project is developed for academic and research purpose.
+      The source codes and the project information are publicly available in my github repository and can be found
+      <a class="red_link" href="https://github.com/abhisheksahoo91/csci4131">here</a>.
+    </p>
+  </div>
+  <legend class="my-legend2">Developer</legend>
+  <div class="mb-5">
+    <p>
+      I am Abhishek, a graduate student in Electrical and Computer Engineering.
+      I have developed this project for partial fulfillment of one of my university courses.
+      The choice of this particular website comes from my passion for music.
+    </p>
+  </div>
+  <legend class="my-legend2">Feedback</legend>
+  <div class="mb-5">
+    <p>
+      This is the first stable version of the app. So it is very limited in terms of performance and background display.
+      But I try my best to improve the features as much as I can. Please let me know if you have any comments or
+      suggestions.
+      If you have a really great feature in your mind that you want me to integrate in the app then drop me an 
+      <a class="red_link" href="mailto: abhisheksahoo91@gmail.com">email</a>.
+    </p>
+  </div>
+  {% endif %}
+</div>
 {% endblock %}

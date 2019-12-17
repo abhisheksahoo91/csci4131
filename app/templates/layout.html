@@ -37,19 +37,26 @@
                 </button>
 
                 {% if current_user.is_authenticated %}
-                <ul class="nav nav-pills mx-3">
+                <ul class="nav nav-pills px-2">
                     <li class="nav-item dropdown">
                         <a class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                             aria-haspopup="true" aria-expanded="false"><i class="fas fa-heart"></i> Favorite</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{{ url_for('favorite', search_type='album') }}"><i class="fas fa-compact-disc"></i> Album</a>
+                            <a class="dropdown-item btn btn-outline-danger"
+                                href="{{ url_for('favorite', search_type='album') }}"><i
+                                    class="fas fa-compact-disc"></i> Album</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{{ url_for('favorite', search_type='artist') }}"><i class="fas fa-user"></i> Artist</a>
+                            <a class="dropdown-item btn btn-outline-danger"
+                                href="{{ url_for('favorite', search_type='artist') }}"><i class="fas fa-user"></i>
+                                Artist</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item"
-                                href="{{ url_for('favorite', search_type='playlist') }}"><i class="fas fa-clipboard-list"></i> Playlist</a>
+                            <a class="dropdown-item btn btn-outline-danger"
+                                href="{{ url_for('favorite', search_type='playlist') }}"><i
+                                    class="fas fa-clipboard-list"></i> Playlist</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{{ url_for('favorite', search_type='track') }}"><i class="fas fa-music"></i> Track</a>
+                            <a class="dropdown-item btn btn-outline-danger"
+                                href="{{ url_for('favorite', search_type='track') }}"><i class="fas fa-music"></i>
+                                Track</a>
                         </div>
                     </li>
                 </ul>
@@ -61,7 +68,7 @@
                         <li class="nav-item active">
                             <form class="form-inline"
                                 action="{{ url_for('searched', search_type=search_type, search_text=search_text) }}">
-                                <div class="form-group m-2 pl-5">
+                                <div class="form-group m-1 pl-3">
                                     <select id="search_type_id" class="form-control" name="search_type">
                                         <option value="album">Album</option>
                                         <option value="artist">Artist</option>
@@ -76,7 +83,8 @@
                                     <div class="invalid-feedback">Please fill out this field.</div>
                                 </div>
 
-                                <button class="btn btn-outline-light my-2 my-sm-0" type="submit"><i class="fas fa-search"></i> Search</button>
+                                <button class="btn btn-outline-light my-2 my-sm-0" type="submit"><i
+                                        class="fas fa-search"></i> Search</button>
                             </form>
                         </li>
                         {% endif %}

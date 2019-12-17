@@ -24,14 +24,12 @@ class Genre(db.Model):
     def __repr__(self):
         return f"Genre('{self.id}', '{self.name}')"
 
-'''
 class Entity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), nullable=False, unique=True)
     favorites = db.relationship('Favorite', backref='entity', lazy=True)
     def __repr__(self):
         return f"Entity('{self.id}', '{self.name}')"
-'''
 
 class Favorite(db.Model):
     id = db.Column(db.Integer, primary_key=True)
